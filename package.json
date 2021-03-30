@@ -22,6 +22,7 @@
     "@aws-amplify/auth": "^3.4.29",
     "@aws-amplify/ui-angular": "^1.0.6",
     "aws-amplify": "^3.3.26",
+    "aws-amplify-angular": "^5.0.55",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
@@ -34,6 +35,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "graphql": "^14.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.1.0",

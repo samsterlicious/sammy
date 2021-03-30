@@ -6,19 +6,26 @@ const AWS_INFO = {
     mandatorySignIn: false,
     authenticationFlowType: 'USER_SRP_AUTH',
     oauth: {
-      domain: 'your_cognito_domain',
+      domain: 'auth.sammy.link',
       scope: [
         'phone',
         'email',
         'profile',
         'openid',
-        'aws.cognito.signin.user.admin',
       ],
-      redirectSignIn: 'http://localhost:4200/',
+      redirectSignIn: 'http://localhost:4200',
       redirectSignOut: 'http://localhost:4200/',
       responseType: 'code'
     },
   },
+  API : {
+    endpoints: [
+      {
+          name: "sammyApi",
+          endpoint: "https://api.sammy.link"
+      },
+    ]
+  }
 };
 
 export default AWS_INFO;
