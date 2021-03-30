@@ -7,11 +7,11 @@ const AWS_INFO = {
     authenticationFlowType: 'USER_SRP_AUTH',
     oauth: {
       domain: 'auth.sammy.link',
-      scope: [
-        'phone',
+      scope: [ 
         'email',
         'profile',
         'openid',
+        'aws.cognito.signin.user.admin'
       ],
       redirectSignIn: 'http://localhost:4200',
       redirectSignOut: 'http://localhost:4200/',
