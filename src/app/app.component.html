@@ -1,5 +1,5 @@
-<amplify-authenticator>
-  <div class="content" role="main">Hello World</div>
+<div *ngIf="isAuthenticated" class="content" role="main">
   <app-billing></app-billing>
   <router-outlet></router-outlet>
-</amplify-authenticator>
+</div> 
+<img *ngIf="!isAuthenticated" src="assets/gifs/pizzaGif.gif" class="center"/>
