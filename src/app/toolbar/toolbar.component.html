@@ -1,0 +1,8 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>My App</span>
+    <span class="spacer"></span> 
+    <button *ngIf="!loggedIn" mat-icon-button aria-label="Sign in button" (click)="signIn()">Sign in</button>
+    <button *ngIf="loggedIn" mat-icon-button aria-label="Sign in button" (click)="signOut()">Sign Out</button>
+  </mat-toolbar-row>
+</mat-toolbar>

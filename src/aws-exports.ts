@@ -14,7 +14,7 @@ const AWS_INFO = {
         'aws.cognito.signin.user.admin'
       ],
       redirectSignIn: 'http://localhost:4200',
-      redirectSignOut: 'http://localhost:4200/',
+      redirectSignOut: 'http://localhost:4200',
       responseType: 'code'
     },
   },

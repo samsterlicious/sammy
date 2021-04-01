@@ -14,8 +14,6 @@ export class AuthService implements HttpInterceptor {
      return from(Auth.currentSession())
       .pipe(
         switchMap(session => {
-          console.log(session.getIdToken().getJwtToken())
-          console.log('session',session.getAccessToken().getJwtToken())
           const modifiedHeader = req.clone({
             headers: req.headers.append('Authorization', session.getIdToken().getJwtToken())
           })
