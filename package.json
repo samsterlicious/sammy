@@ -1,10 +1,13 @@
 {
   "name": "sammy",
   "version": "0.0.0",
+  "scarfSettings": {
+    "enabled": false
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,8 +26,13 @@
     "@angular/router": "~11.2.5",
     "@aws-amplify/auth": "^3.4.29",
     "@aws-amplify/ui-angular": "^1.0.6",
+    "@schematics/angular": "^9.1.0",
+    "auth0": "^2.34.0",
     "aws-amplify": "^3.3.26",
     "aws-amplify-angular": "^5.0.55",
+    "ng2-pdf-viewer": "^6.4.1",
+    "ngx-quill": "^13.2.0",
+    "quill": "^1.3.7",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
@@ -33,9 +41,11 @@
     "@angular-devkit/build-angular": "~0.1102.3",
     "@angular/cli": "~11.2.4",
     "@angular/compiler-cli": "~11.2.5",
+    "@types/auth0": "^2.33.3",
     "@types/graphql": "^14.5.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "@types/quill": "^1.3.10",
     "codelyzer": "^6.0.0",
     "graphql": "^14.0.0",
     "jasmine-core": "~3.6.0",

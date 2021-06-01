@@ -1,8 +1,27 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>My App</span>
-    <span class="spacer"></span> 
-    <button *ngIf="!loggedIn" mat-icon-button aria-label="Sign in button" (click)="signIn()">Sign in</button>
-    <button *ngIf="loggedIn" mat-icon-button aria-label="Sign in button" (click)="signOut()">Sign Out</button>
-  </mat-toolbar-row>
+<mat-toolbar color="primary"> 
+  <span>Mauldin</span>
+  <span class="spacer"></span>
+  <span *ngIf="loggedIn" class="welcome-span">Welcome {{ name }}</span>
+  <button
+    mat-icon-button
+    *ngIf="loggedIn"
+    [matMenuTriggerFor]="menu"
+    aria-label="name menu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu"> 
+    <button (click)="signOut()" class="mat-menu-item">
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+  <button
+    *ngIf="!loggedIn"
+    class="mat-icon-button icon-button"
+    color="primary"
+    aria-label="Sign in button"
+    (click)="signIn()"
+  >
+    Sign in
+  </button>
 </mat-toolbar>

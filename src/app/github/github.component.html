@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="item">
+    <div class="title">
+      Frontend Repo
+      <a mat-button href="https://github.com/samsterlicious/sammy">
+        <mat-icon svgIcon="github"></mat-icon>
+      </a>
+    </div>
+    <p class="text">
+      This project was built using Angular. I'm coming from a React background
+      but my current job uses angular so I'm doing it in Angular just to learn.
+      I'm liking how they use reactive streams as opposed to promises when
+      getting data from the backend.
+    </p>
+  </div>
+  <div class="item">
+    <div class="title">
+      Infrastructure Repo
+      <a mat-button href="https://github.com/samsterlicious/infrastructure_cdk">
+        <mat-icon svgIcon="github"></mat-icon>
+      </a>
+    </div>
+    <p class="text">
+      This project was built using typescript and CDK. CDK is a tool provided by
+      AWS to create AWS resources (certificates, route 53 alias records, cognito
+      user pools, etc) programatically. This project also creates code pipelines
+      (AWS CI/CD tool) for all 3 projects. This allows continious deleviry and a
+      workflow for all the projects. Cognito is for authentication for the front
+      and backend. I'm using auth0 as an identity provider (it's free and allows
+      the user to log in with their google account)
+    </p>
+  </div>
+  <div class="item">
+    <div class="title">
+      Backend Repo
+      <a mat-button href="https://github.com/samsterlicious/sammy-api">
+        <mat-icon svgIcon="github"></mat-icon>
+      </a>
+    </div>
+    <p class="text">
+        This project is the lambdas/api gateway/typescript code for the backend. 
+        This allows the frontend to communicate with amazon recources like s3 (cloud storage),
+        dynamodb (nosql database), etc.
+    </p> 
+  </div>
+</div>

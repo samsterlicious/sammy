@@ -1,0 +1,27 @@
+<mat-tab-group mat-align-tabs="start" dynamicHeight>
+  <mat-tab label="Me">
+    <app-me></app-me>
+  </mat-tab>
+  <mat-tab label="Github Repos">
+    <app-github></app-github>
+  </mat-tab>
+  <mat-tab label="Resume">
+    <button
+      mat-button
+      onclick="window.open('./../../assets/pdf/samresume.pdf').print();"
+    >
+      <mat-icon>download</mat-icon>
+    </button>
+    <pdf-viewer
+      src="./../../assets/pdf/samresume.pdf"
+      [original-size]="false"
+    ></pdf-viewer>
+  </mat-tab>
+  <mat-tab label="Todo Items">
+    <mat-list role="list">
+      <mat-list-item role="listitem">Chat System</mat-list-item>
+      <mat-list-item role="listitem">Javascript Game</mat-list-item>
+      <mat-list-item role="listitem">Music player (if legal)</mat-list-item>
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>

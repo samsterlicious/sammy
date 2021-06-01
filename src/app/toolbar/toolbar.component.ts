@@ -8,6 +8,7 @@ import { AuthenticationService } from 'src/services/auth/authentication.service'
 })
 export class ToolbarComponent implements OnInit {
   loggedIn: boolean;
+  name: string = ""; 
 
   constructor(private authService: AuthenticationService) {
     this.loggedIn = false;
@@ -18,16 +19,15 @@ export class ToolbarComponent implements OnInit {
   }
 
   async signOut() {
-    const ret = await this.authService.signOut()
-    console.log("ret",ret)
+    const ret = await this.authService.signOut() 
   }
 
   ngOnInit(): void {
     this.authService.isAuthenticated().subscribe((val) => {
       this.loggedIn = val;
     });
-    // this.authService.getCurrentSession().subscribe(info=>{
-    //   console.log('info',info)
-    // })
+    this.authService.getCurrentSession().subscribe(info=>{ 
+      this.name = info.getIdToken().payload.name;
+    })
   }
 }

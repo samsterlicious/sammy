@@ -1,0 +1,14 @@
+form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+mat-form-field {
+  margin: 10px;
+}
+
+mat-spinner {
+  margin: auto;
+  width: 50%;
+}

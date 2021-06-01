@@ -10,12 +10,11 @@ import { Observable, from } from 'rxjs';
 export class BillingService {
   constructor(private http: HttpClient) {}
 
-  getBudget(): Observable<Budget> { 
-    return from(this.http.get<Budget>('https://api.sammy.link/'))
-    // return from(API.get('sammyApi', '/', {}));
+  getBudget(year: string, month: string): Observable<Budget> { 
+    return this.http.get<Budget>(`https://api.sammy.link/budget?year=${year}&month=${month}`)
   }
 }
 
 export interface Budget {
-  message: number;
+  url: string;
 }

@@ -1,3 +1,17 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+.icon-button {
+  border: none;
+  /* background: transparent; */
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  outline: 1px auto purple;
+}
+
+.welcome-span {
+  margin-right: 10px;
+}

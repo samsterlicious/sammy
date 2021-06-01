@@ -1,6 +1,39 @@
-<app-toolbar></app-toolbar>
-<div *ngIf="isAuthenticated" class="content" role="main">
-  <app-billing></app-billing>
-  <router-outlet></router-outlet>
-</div> 
-<!-- <img *ngIf="!isAuthenticated" src="assets/gifs/pizzaGif.gif" class="center"/> -->
+<div class="content" role="main">
+  <app-toolbar></app-toolbar>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #closedNav mode="side" opened *ngIf="!navOpened">
+      <mat-nav-list>
+        <button mat-icon-button (click)="open()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav
+      #sidenav
+      *ngIf="navOpened"
+      mode="side"
+      opened
+      [class]="navOpened ? 'openedSideNav' : 'closedSideNav'"
+    >
+      <mat-nav-list>
+        <div class="wrapper">
+          <div class="into">
+            Sam Greene <br />
+            <span class="subIntro"> Full Stack Developer </span>
+          </div>
+          <button mat-icon-button aria-label="name menu" (click)="close()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink=".">About Me</a>
+        <a mat-list-item routerLink="cost">Monthly Cost</a>
+        <a mat-list-item routerLink="chat">Chat Room</a>
+        <!-- <a mat-list-item routerLink="accountability">Accountability</a> -->
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

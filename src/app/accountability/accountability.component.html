@@ -4,7 +4,7 @@
     <mat-select
       [(ngModel)]="selectedYear"
       name="selectedYear"
-      (ngModelChange)="loadMonths($event)"
+      (ngModelChange)="loadMonths()"
     >
       <mat-option *ngFor="let year of years" [value]="year">
         {{ year }}
@@ -16,12 +16,21 @@
     <mat-select
       [(ngModel)]="selectedMonth"
       name="selectedMonth"
-      (ngModelChange)="loadChart($event)"
+      (ngModelChange)="fetch()"
     >
-      <mat-option *ngFor="let month of months" [value]="month">
+      <mat-option *ngFor="let month of months; let i = index" [value]="i">
         {{ month }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </form>
-<mat-spinner></mat-spinner>
+<div class="dayHeader">
+  <div class="dayHeaderElement" *ngFor="let day of days">
+    {{ day }}
+  </div>
+</div>
+<div class="calendar">
+  <div class="dayElement" *ngFor="let day of daysArray">
+    {{ day.name }}
+  </div>
+</div>

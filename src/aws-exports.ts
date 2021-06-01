@@ -3,7 +3,7 @@ const AWS_INFO = {
     region: 'us-east-1',
     userPoolId: 'us-east-1_gmZ6kAJzv',
     userPoolWebClientId: '7fr4rob9e3hqn4vsau3qaou6u',
-    mandatorySignIn: false,
+    mandatorySignIn: true,
     authenticationFlowType: 'USER_SRP_AUTH',
     oauth: {
       domain: 'auth.sammy.link',

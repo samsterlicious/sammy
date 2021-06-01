@@ -1,27 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import { Auth } from '@aws-amplify/auth';
-import { catchError, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService implements HttpInterceptor {
-
-  constructor() { }
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-     return from(Auth.currentSession())
-      .pipe(
-        switchMap(session => {
+  constructor() {}
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return from(Auth.currentSession().
+    catch(err=>{
+      return "";
+    })).pipe(
+      switchMap((session:any) => {
+        if (session) {
           const modifiedHeader = req.clone({
-            headers: req.headers.append('Authorization', session.getIdToken().getJwtToken())
-          })
+            headers: req.headers.append(
+              'Authorization',
+              session.getIdToken().getJwtToken()
+            ),
+          });
           return next.handle(modifiedHeader);
-        })
-      ) 
-    // console.log('req',req)
-    //   return next.handle(req);
-      
+        } else {
+          return next.handle(req);
+        }
+      })
+    );
   }
 }

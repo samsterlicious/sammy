@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { Auth } from 'aws-amplify';
 import { catchError, map } from 'rxjs/operators';
 import { ICredentials } from '@aws-amplify/core';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUserSession } from 'amazon-cognito-identity-js'; 
 
 @Injectable({
   providedIn: 'root',
@@ -25,29 +25,21 @@ export class AuthenticationService {
 
   isAuthenticated(): Observable<boolean> {
     return from(Auth.currentAuthenticatedUser()).pipe(
-      map((result: any) => {
-        console.log("swig")
+      map((result: any) => { 
         this.loggedIn.next(true);
         return true;
       }),
-      catchError((error: any) => {
-        console.log("swag")
-        // this.loggedIn.next(false);
+      catchError((error: any) => {  
         return of(false);
       })
     );
   }
 
-  async signOut():Promise<any> {  
-    await Auth.signOut({global: true}).then(resp=>{
-      console.log("signed out!")
-    }).catch(err=>{ 
-      console.log("ohhhhh")
-    });
-    return "good"
+  signOut():Observable<any> {   
+    return from(Auth.signOut())
   }
 
-  signIn(): Observable<ICredentials | null> { 
+  signIn(): Observable<ICredentials | null> {   
     return from(
       Auth.federatedSignIn({
         customProvider: 'auth0',
