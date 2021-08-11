@@ -17,17 +17,42 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "ulid",
+              "crypto-js/core",
+              "buffer",
+              "axios",
+              "http",
+              "https",
+              "stream",
+              "web3",
+              "crypto",
+              "@aws-crypto/sha256-browser",
+              "pdfjs-dist/es5/web/pdf_viewer",
+              "pdfjs-dist/es5/build/pdf",
+              "@aws-amplify/core",
+              "crypto-js/hmac-sha256",
+              "crypto-js/lib-typedarrays",
+              "js-cookie",
+              "@aws-crypto/sha256-js",
+              "os",
+              "uuid",
+              "isomorphic-unfetch",
+              "lodash/isEqual",
+              "lodash/isEmpty",
+              "lodash/get",
+              "zen-observable",
+              "@aws-crypto/crc32",
+              "fast-xml-parser"
+            ],
             "outputPath": "dist/sammy",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [ 
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/styles.css"
             ],
@@ -87,11 +112,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [ 
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
@@ -106,9 +128,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

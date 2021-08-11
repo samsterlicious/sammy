@@ -1,12 +1,10 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
+import { AppComponent } from './app.component'; 
 // @ts-ignore
 import Amplify from 'aws-amplify';
 import awsconfig from '../aws-exports';
-import { BillingComponent } from './billing/billing.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from '../services/interceptor/auth.service';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -16,31 +14,29 @@ import { HomeComponent } from './home/home.component';
 import { MeComponent } from './me/me.component';
 import { GithubComponent } from './github/github.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ChatComponent } from './chat/chat.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { AuthGuard } from '../guard/AuthGuard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { QuillModule } from 'ngx-quill';
-import { AccountabilityComponent } from './accountability/accountability.component'; 
+import { AccountabilityComponent } from './accountability/accountability.component';
+import { CasinoComponent } from './casino/casino/casino.component'; 
 
 Amplify.configure(awsconfig);
 @NgModule({
   declarations: [
     AppComponent,
-    BillingComponent,
     ToolbarComponent,
     HomeComponent,
     MeComponent,
-    GithubComponent,
-    ChatComponent,
+    GithubComponent, 
     UnauthorizedComponent,
     AccountabilityComponent,
+    CasinoComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule,
-    AmplifyUIAngularModule,
+    MaterialModule, 
     AppRoutingModule,
     PdfViewerModule,
     HttpClientModule,

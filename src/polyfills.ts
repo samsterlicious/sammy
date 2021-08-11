@@ -57,13 +57,54 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
+import 'zone.js/dist/zone'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
- (window as any).global = window;
- (window as any).process = {
-   env: { DEBUG: undefined },
- };
+
+(window as any).global = window;
+(window as any).global.Buffer = global.Buffer || require('buffer').Buffer;
+(window as any).process = {
+  env: { DEBUG: undefined },
+  version: 'node',
+  nextTick: (function () {
+    var canSetImmediate = typeof window !== 'undefined' && window.setImmediate;
+    var canPost =
+      typeof window !== 'undefined' &&
+      window.postMessage &&
+      window.addEventListener;
+    if (canSetImmediate) {
+      return function (f: any) {
+        return window.setImmediate(f);
+      };
+    }
+    if (canPost) {
+      var queue: any[] = [];
+      window.addEventListener(
+        'message',
+        function (ev) {
+          var source = ev.source;
+          if (
+            (source === window || source === null) &&
+            ev.data === 'process-tick'
+          ) {
+            ev.stopPropagation();
+            if (queue.length > 0) {
+              var fn = queue.shift();
+              fn();
+            }
+          }
+        },
+        true
+      );
+      return function nextTick(fn: any) {
+        queue.push(fn);
+        window.postMessage('process-tick', '*');
+      };
+    }
+    return function nextTick(fn: any) {
+      setTimeout(fn, 0);
+    };
+  })(),
+};
