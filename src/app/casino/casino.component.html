@@ -1,0 +1,48 @@
+<ng-container *ngIf="accountInfo$ | async as accountInfo; else loading">
+  <div class="body">
+    <mat-form-field appearance="fill" class="address">
+      <mat-label>Contract address</mat-label>
+      <input [(ngModel)]="smartContractAddress" matInput disabled />
+    </mat-form-field>
+
+    <table mat-table [dataSource]="accountInfo.bets" class="table">
+      <ng-container matColumnDef="eventName">
+        <th mat-header-cell *matHeaderCellDef>Event Name</th>
+        <td mat-cell *matCellDef="let bet">{{ bet.eventName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fighters">
+        <th mat-header-cell *matHeaderCellDef>Bet</th>
+        <td mat-cell *matCellDef="let bet">{{ bet.fighters }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let bet">{{ bet.amount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cutoffDate">
+        <th mat-header-cell *matHeaderCellDef>Cutoff Date</th>
+        <td mat-cell *matCellDef="let bet">{{ bet.cutoffDate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="settleDate">
+        <th mat-header-cell *matHeaderCellDef>Settlement Date</th>
+        <td mat-cell *matCellDef="let bet">{{ bet.settleDate }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="makeBet"
+      (click)="makeBet()"
+    >
+      Make Bet
+    </button>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <mat-spinner class="spinner"></mat-spinner>
+</ng-template>

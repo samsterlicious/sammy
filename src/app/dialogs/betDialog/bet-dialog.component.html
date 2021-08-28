@@ -1,0 +1,46 @@
+<mat-stepper #stepper>
+  <mat-step [stepControl]="fightEventFormGroup">
+    <form
+      [formGroup]="fightEventFormGroup"
+      *ngIf="betEvents$ | async; let betEvents"
+    >
+      <ng-template matStepLabel>Pick an event</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>Event</mat-label>
+        <mat-select formControlName="event">
+          <mat-option
+            class="mat-select-value"
+            *ngFor="let betEvent of betEvents"
+            [value]="betEvent.name"
+          >
+            {{ betEvent.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="amountFormGroup">
+    <form [formGroup]="amountFormGroup">
+      <ng-template matStepLabel>How much to bet</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>Bet</mat-label>
+        <input matInput formControlName="amount" placeholder="0.1" required />
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-stepper>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountabilityComponent } from './accountability.component';
+import { BetDialogComponent } from './bet-dialog.component';
 
-describe('AccountabilityComponent', () => {
-  let component: AccountabilityComponent;
-  let fixture: ComponentFixture<AccountabilityComponent>;
+describe('BetDialogComponent', () => {
+  let component: BetDialogComponent;
+  let fixture: ComponentFixture<BetDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AccountabilityComponent ]
+      declarations: [ BetDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountabilityComponent);
+    fixture = TestBed.createComponent(BetDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

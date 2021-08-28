@@ -1,10 +1,11 @@
-<mat-toolbar color="primary"> 
+ <mat-toolbar color="primary"> 
   <span>Mauldin</span>
   <span class="spacer"></span>
-  <span *ngIf="loggedIn" class="welcome-span">Welcome {{ name }}</span>
+  <span *ngIf="isLoggedIn$ | async; else notLoggedIn">
+  <span  class="welcome-span">Welcome {{ name }}</span>
   <button
     mat-icon-button
-    *ngIf="loggedIn"
+    *ngIf="isLoggedIn$ | async;"
     [matMenuTriggerFor]="menu"
     aria-label="name menu"
   >
@@ -15,8 +16,9 @@
       <span>Logout</span>
     </button>
   </mat-menu>
-  <button
-    *ngIf="!loggedIn"
+  </span>
+  <ng-template #notLoggedIn>
+  <button 
     class="mat-icon-button icon-button"
     color="primary"
     aria-label="Sign in button"
@@ -24,4 +26,5 @@
   >
     Sign in
   </button>
-</mat-toolbar>
+</ng-template>
+</mat-toolbar> 

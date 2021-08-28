@@ -1,50 +1,59 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component'; 
-// @ts-ignore
-import Amplify from 'aws-amplify';
-import awsconfig from '../aws-exports';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthService } from '../services/interceptor/auth.service';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material/material.module';
-import { HomeComponent } from './home/home.component';
-import { MeComponent } from './me/me.component';
-import { GithubComponent } from './github/github.component';
+// @ts-ignore
+import Amplify, { Hub } from 'aws-amplify';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
-import { AuthGuard } from '../guard/AuthGuard';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { QuillModule } from 'ngx-quill';
-import { AccountabilityComponent } from './accountability/accountability.component';
-import { CasinoComponent } from './casino/casino/casino.component'; 
+import { ConfigService } from 'src/services/config/config.service';
+import { InitService } from 'src/services/init/init.service';
+import { AuthGuard } from '../guard/AuthGuard';
+import { AuthService } from '../services/interceptor/auth.service';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CasinoComponent } from './casino/casino.component';
+import { BetDialogComponent } from './dialogs/betDialog/bet-dialog.component';
+import { SmartContractDialogComponent } from './dialogs/smartContractDialog/smart-contract-dialog.component';
+import { GithubComponent } from './github/github.component';
+import { HomeComponent } from './home/home.component';
+import { MaterialModule } from './material/material.module';
+import { MeComponent } from './me/me.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
-Amplify.configure(awsconfig);
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     HomeComponent,
     MeComponent,
-    GithubComponent, 
+    GithubComponent,
     UnauthorizedComponent,
-    AccountabilityComponent,
     CasinoComponent,
+    SmartContractDialogComponent,
+    BetDialogComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule, 
+    MaterialModule,
     AppRoutingModule,
     PdfViewerModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    QuillModule.forRoot(), 
+    QuillModule.forRoot(),
   ],
   providers: [
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: getUseFactory,
+      deps: [InitService, ConfigService],
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthService,
@@ -56,3 +65,18 @@ Amplify.configure(awsconfig);
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+export function getUseFactory(
+  appInitService: InitService,
+  config: ConfigService
+) {
+  return () => {
+    const amplifyConfig = config.getConfig('Auth');
+    Hub.listen('auth', ({ payload: { event, data, message } }) => {
+      appInitService.handleEvents(event);
+    });
+    Amplify.configure({
+      Auth: amplifyConfig,
+    });
+  };
+}
