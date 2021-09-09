@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/guard/AuthGuard';
 import { CasinoComponent } from './casino/casino.component';
+import { ConfirmBetComponent } from './casino/confirm-bet/confirm-bet.component';
 import { BetDialogComponent } from './dialogs/betDialog/bet-dialog.component';
 import { HomeComponent } from './home/home.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'casino', component: CasinoComponent, canActivate: [AuthGuard] },
   { path: 'bet/:smartContract', component: BetDialogComponent },
+  { path: 'confirmBet/:betId', component: ConfirmBetComponent },
 ];
 
 @NgModule({

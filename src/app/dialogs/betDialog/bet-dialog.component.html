@@ -1,34 +1,140 @@
-<mat-stepper #stepper>
+<mat-stepper
+  #stepper
+  *ngIf="betEvents$ | async; let betEvents; else: loading"
+  orientation="vertical"
+>
   <mat-step [stepControl]="fightEventFormGroup">
-    <form
-      [formGroup]="fightEventFormGroup"
-      *ngIf="betEvents$ | async; let betEvents"
-    >
-      <ng-template matStepLabel>Pick an event</ng-template>
-      <mat-form-field appearance="fill">
-        <mat-label>Event</mat-label>
-        <mat-select formControlName="event">
-          <mat-option
-            class="mat-select-value"
-            *ngFor="let betEvent of betEvents"
-            [value]="betEvent.name"
+    <form [formGroup]="fightEventFormGroup">
+      <ng-template matStepLabel>Pick an event & Fighter</ng-template>
+      <div class="topPart">
+        <mat-form-field appearance="outline" class="example-width">
+          <mat-label>Event</mat-label>
+          <mat-select formControlName="event">
+            <mat-option
+              class="mat-select-value"
+              *ngFor="let betEvent of betEvents"
+              [value]="betEvent"
+            >
+              {{ betEvent.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button
+            class="button"
+            mat-button
+            matStepperNext
+            [disabled]="!confirmDetails.event || !confirmDetails.chosenFighter"
           >
-            {{ betEvent.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
+            Next
+          </button>
+        </div>
       </div>
+      <ng-container *ngIf="fights$ | async; let fights">
+        <table
+          mat-table
+          *ngIf="!loadingFights"
+          [dataSource]="fights"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="firstFighter">
+            <th mat-header-cell *matHeaderCellDef>Fighter One</th>
+            <td
+              mat-cell
+              class="hover"
+              (click)="selectFighter(fight.firstFighter, fight.secondFighter)"
+              [ngClass]="{
+                selectedTd: confirmDetails.chosenFighter == fight.firstFighter
+              }"
+              *matCellDef="let fight"
+            >
+              {{ fight.firstFighter }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="secondFighter">
+            <th mat-header-cell *matHeaderCellDef>Fighter Two</th>
+            <td
+              mat-cell
+              class="hover"
+              [ngClass]="{
+                selectedTd: confirmDetails.chosenFighter == fight.secondFighter
+              }"
+              *matCellDef="let fight"
+              (click)="selectFighter(fight.secondFighter, fight.firstFighter)"
+            >
+              {{ fight.secondFighter }}
+            </td>
+          </ng-container>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-container>
+      <mat-spinner class="spinner" *ngIf="loadingFights"></mat-spinner>
     </form>
   </mat-step>
   <mat-step [stepControl]="amountFormGroup">
-    <form [formGroup]="amountFormGroup">
-      <ng-template matStepLabel>How much to bet</ng-template>
-      <mat-form-field appearance="fill">
-        <mat-label>Bet</mat-label>
-        <input matInput formControlName="amount" placeholder="0.1" required />
-      </mat-form-field>
+    <ng-container
+      *ngIf="exchangeRate$ | async; let exchangeRate; else: exchangeLoading"
+    >
+      <form [formGroup]="amountFormGroup">
+        <ng-template matStepLabel>Select a bet amount</ng-template>
+        <div class="conversion">
+          1 <strong>ETH</strong> is currently worth {{ exchangeRate }}
+          <strong>USD</strong>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>USD amount</mat-label>
+          <input type="number" formControlName="amount" matInput />
+        </mat-form-field>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </ng-container>
+    <ng-template #exchangeLoading>
+      <mat-spinner></mat-spinner>
+    </ng-template>
+  </mat-step>
+
+  <mat-step [stepControl]="dateFormGroup">
+    <form [formGroup]="dateFormGroup">
+      <ng-template matStepLabel
+        >Choose bet by date and settlement date</ng-template
+      >
+      <div class="dates">
+        <mat-form-field class="date" appearance="outline">
+          <mat-label>Event date</mat-label>
+          <input matInput [value]="generalDate | date: 'fullDate'" readonly />
+        </mat-form-field>
+
+        <mat-form-field class="date">
+          <mat-label>Last time to place the bet (EST)</mat-label>
+          <input
+            matInput
+            [ngxMatDatetimePicker]="betBypicker"
+            formControlName="betByDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="$any(betBypicker)"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #betBypicker> </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+        <mat-form-field class="date">
+          <mat-label>When can the bet be settled (EST)</mat-label>
+          <input
+            matInput
+            [ngxMatDatetimePicker]="settlePicker"
+            formControlName="settlementDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="$any(settlePicker)"
+          ></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #settlePicker> </ngx-mat-datetime-picker>
+        </mat-form-field>
+      </div>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
@@ -36,11 +142,39 @@
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
+    <ng-template matStepLabel>Confirm Details</ng-template>
+    <div class="details">
+      <mat-form-field appearance="outline">
+        <mat-label>Amount (ETH)</mat-label>
+        <input matInput [value]="confirmDetails.amount" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Event</mat-label>
+        <input matInput [value]="confirmDetails.event" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fighter to win</mat-label>
+        <input matInput [value]="confirmDetails.chosenFighter" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fighter to lose</mat-label>
+        <input matInput [value]="confirmDetails.nonChosenFighter" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Bet Cutoff Date</mat-label>
+        <input matInput [value]="confirmDetails.cutoffDate" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Settlement Date</mat-label>
+        <input matInput [value]="confirmDetails.settlementDate" readonly />
+      </mat-form-field>
+    </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button (click)="makeBet()">Bet</button>
     </div>
   </mat-step>
 </mat-stepper>
+<ng-template #loading>
+  <mat-spinner class="middle"></mat-spinner>
+</ng-template>

@@ -17,6 +17,7 @@ export const environments = {
       },
     },
     API_URL: 'http://localhost:3000',
+    BASE_URL: 'http://localhost:4200/',
   },
   prod: {
     Auth: {
@@ -39,10 +40,7 @@ export const environments = {
         responseType: 'code',
       },
     },
-    API: {
-      sammyApi: {
-        url: 'https://api.sammy.link',
-      },
-    },
+    API_URL: 'https://api.sammy.link',
+    BASE_URL: 'https://sammy.link/',
   },
 };

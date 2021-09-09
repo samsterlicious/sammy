@@ -18,6 +18,7 @@ export class GambleService {
   private contractAbi = require('src/contracts/Gambler.json').abi;
   private myGambleContractAddress = new BehaviorSubject<string>('');
   public newContractSubject = new BehaviorSubject<string>('');
+  public exchangeRate$: Observable<string>;
   public $createContract: Observable<string> = this.newContractSubject
     .asObservable()
     .pipe(
@@ -54,6 +55,7 @@ export class GambleService {
 
   private contract!: any;
   private account = '';
+  public $vm: Observable<AccountInfo>;
 
   constructor(
     private http: HttpClient,
@@ -83,7 +85,11 @@ export class GambleService {
         ...accountInfo,
         smartContractAddress:
           accountInfo.smartContractAddress || contractAddress,
-      })),
+      }))
+    );
+
+    this.exchangeRate$ = this.getExchangeRate().pipe(
+      map((data: any) => data.data.rates.USD),
       shareReplay(1)
     );
   }
@@ -94,6 +100,7 @@ export class GambleService {
 
   createContract(account: string) {
     this.contract = new window.web3.eth.Contract(this.contractAbi);
+
     const bytecode = require('src/contracts/bytes.json').bytes;
     return from(
       this.contract
@@ -106,21 +113,55 @@ export class GambleService {
     );
   }
 
-  makeBet() {
+  makeBet(betDetails: BetDetails, smartAddress: string) {
+    const key = Web3.utils.asciiToHex(v4().replace(/-/g, '')).substring(0, 66);
+    console.log(
+      v4(),
+      'key',
+      key,
+      'one',
+      Web3.utils.asciiToHex(v4().replace(/-/g, ''))
+    );
     return from(
       window.ethereum.request({ method: 'eth_requestAccounts' })
     ).pipe(
-      tap((accounts: any) => (this.account = accounts[0])),
-      mergeMap((accounts: string[]) => {
-        console.log('account', accounts);
+      mergeMap((accounts: any) => {
         const key = Web3.utils.asciiToHex(v4()).substring(0, 66);
-        const now = new Date();
-        const cutoffDate = Math.floor(now.getTime() / 1000);
-        now.setDate(now.getDate() + 5);
-        const settleDate = Math.floor(now.getTime() / 1000);
-        return this.contract.methods
-          .createBet('sam', 'shichao', true, key, cutoffDate, settleDate)
-          .send({ from: accounts[0] });
+        const cutoffDate = Math.floor(betDetails.cutoffDate.getTime() / 1000);
+        const settleDate = Math.floor(
+          betDetails.settlementDate.getTime() / 1000
+        );
+
+        this.contract = new window.web3.eth.Contract(
+          this.contractAbi,
+          smartAddress
+        );
+
+        return combineLatest([
+          from(
+            this.contract.methods
+              .createBet(
+                betDetails.sport,
+                betDetails.chosenFighter,
+                betDetails.nonChosenFighter,
+                betDetails.event,
+                cutoffDate,
+                settleDate,
+                key
+              )
+              .send({
+                from: accounts[0],
+                value: parseInt(
+                  window.web3.utils.toWei(String(betDetails.amount), 'ether')
+                ),
+              })
+          ),
+          this.auth.email$,
+        ]).pipe(
+          mergeMap(([resp, email]) =>
+            this.postBet(key, betDetails, email, smartAddress)
+          )
+        );
       })
     );
   }
@@ -133,12 +174,67 @@ export class GambleService {
     );
   }
 
-  public $vm: Observable<AccountInfo>;
+  getExchangeRate() {
+    return this.http.get<any>(
+      'https://api.coinbase.com/v2/exchange-rates?currency=ETH'
+    );
+  }
+
+  postBet(
+    key: string,
+    betDetails: BetDetails,
+    email: string,
+    smartContractAddress: string
+  ) {
+    return this.http.post<any>(`${this.baseUrl}/gamble/bet/${email}`, {
+      betId: key,
+      betDetails,
+      smartContractAddress,
+    });
+  }
+
+  getBetInfo(betId: string) {
+    return this.http.get<FullBetDetails>(
+      `${this.baseUrl}/gamble/betInfo/${betId}`
+    );
+  }
+
+  confirmBet(betId: string, contractAddress: string, amount: number) {
+    this.contract = new window.web3.eth.Contract(
+      this.contractAbi,
+      contractAddress
+    );
+    return from(
+      window.ethereum
+        .request({ method: 'eth_requestAccounts' })
+        .then((accounts: string[]) => {
+          this.contract.methods.acceptBet(betId).send({
+            from: accounts[0],
+            value: parseInt(window.web3.utils.toWei(String(amount), 'ether')),
+          });
+        })
+    );
+  }
 }
 
 export interface AccountInfo {
   bets: Bet[];
   smartContractAddress: string;
+}
+
+export interface BetDetails {
+  sport: string;
+  event: string;
+  chosenFighter: string;
+  amount: number;
+  nonChosenFighter: string;
+  cutoffDate: Date;
+  settlementDate: Date;
+}
+
+export interface FullBetDetails extends BetDetails {
+  smartContractAddress: string;
+  sort_key: string;
 }
 
 interface Bet {}

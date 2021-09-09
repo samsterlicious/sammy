@@ -1,3 +1,8 @@
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +27,8 @@ import { MaterialModule } from './material/material.module';
 import { MeComponent } from './me/me.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { BetDetailsComponent } from './dialogs/bet-details/bet-details.component';
+import { ConfirmBetComponent } from './casino/confirm-bet/confirm-bet.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +41,13 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     CasinoComponent,
     SmartContractDialogComponent,
     BetDialogComponent,
+    BetDetailsComponent,
+    ConfirmBetComponent,
   ],
   imports: [
+    NgxMatNativeDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,

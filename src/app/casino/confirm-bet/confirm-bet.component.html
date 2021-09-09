@@ -1,0 +1,42 @@
+<div *ngIf="bet$ | async; let bet" class="details">
+  <div class="row">
+    <mat-form-field appearance="outline" class="amount">
+      <mat-label>Amount (ETH)</mat-label>
+      <input matInput [value]="bet.amount" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="twoFlex">
+      <mat-label>Event</mat-label>
+      <input matInput [value]="bet.event" readonly />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline" class="oneFlex">
+      <mat-label>Your choice</mat-label>
+      <input matInput [value]="bet.nonChosenFighter" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="oneFlex">
+      <mat-label>Their Choice</mat-label>
+      <input matInput [value]="bet.chosenFighter" readonly />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline" class="oneFlex">
+      <mat-label>Bet Cutoff Date</mat-label>
+      <input matInput [value]="bet.cutoffDate | date: 'full'" readonly />
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline" class="oneFlex">
+      <mat-label>Settlement Date</mat-label>
+      <input matInput [value]="bet.settlementDate | date: 'full'" readonly />
+    </mat-form-field>
+  </div>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="submitted"
+    (click)="makeBet()"
+  >
+    Bet
+  </button>
+</div>

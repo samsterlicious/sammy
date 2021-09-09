@@ -4,7 +4,7 @@ import { GambleService } from 'src/services/gamble/gamble.service';
 @Component({
   selector: 'app-smart-contract-dialog',
   templateUrl: './smart-contract-dialog.component.html',
-  styleUrls: ['./smart-contract-dialog.component.css'],
+  styleUrls: ['./smart-contract-dialog.component.scss'],
 })
 export class SmartContractDialogComponent implements OnInit {
   constructor(private gambleService: GambleService) {}

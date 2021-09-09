@@ -9,23 +9,24 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AccountInfo, GambleService } from 'src/services/gamble/gamble.service';
+import { BetDetailsComponent } from '../dialogs/bet-details/bet-details.component';
 import { SmartContractDialogComponent } from '../dialogs/smartContractDialog/smart-contract-dialog.component';
 
 @Component({
   selector: 'app-casino',
   templateUrl: './casino.component.html',
-  styleUrls: ['./casino.component.css'],
+  styleUrls: ['./casino.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CasinoComponent implements OnInit {
   @Input() smartContractAddress = '';
 
   displayedColumns: string[] = [
-    'eventName',
-    'fighters',
+    'event',
+    'chosenFighter',
     'amount',
     'cutoffDate',
-    'settleDate',
+    'settlementDate',
   ];
   constructor(
     private gambleService: GambleService,
@@ -51,5 +52,14 @@ export class CasinoComponent implements OnInit {
         restoreFocus: false,
       });
     }
+  }
+
+  openDialogDetails(betId: string) {
+    this.dialog.open(BetDetailsComponent, {
+      restoreFocus: false,
+      data: {
+        betId,
+      },
+    });
   }
 }

@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.radioGroup {
+  margin-bottom: 15px;
+}
+
+.radioElement {
+  margin-right: 10px;
+}
+
+.example-width {
+  width: 300px;
+}
+
+.middle {
+  margin: auto;
+  margin-top: 30px;
+}
+
+table {
+  width: 500px;
+}
+
+.hover {
+  padding-left: 15px;
+  &:hover {
+    background-color: #e8e8e8;
+  }
+}
+
+.conversion {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.dates {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  .date {
+    margin-top: 10px;
+    margin-left: 15px;
+  }
+}
+
+.topPart {
+  display: flex;
+  .button {
+    margin-top: 10px;
+  }
+}
+.selectedTd {
+  background-color: grey;
+  font-weight: bold;
+}
+
+.spinner {
+  margin-left: 100px;
+}

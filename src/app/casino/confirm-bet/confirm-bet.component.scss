@@ -1,0 +1,20 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+  justify-content: space-between;
+  max-width: 500px;
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+  .twoFlex {
+    flex: 3;
+  }
+  .amount {
+    flex: 1 5;
+  }
+  .oneFlex {
+    flex: 1 1 auto;
+  }
+}
